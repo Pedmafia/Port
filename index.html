@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supawit · Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style3d.css">
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three/three.module.js",
+    "three/addons/": "./vendor/three/addons/"
+} }
+</script>
+</head>
+<body>
+
+<canvas id="c" aria-label="3D model of Supawit's workspace"></canvas>
+
+<div id="loader"><b>Supawit<span>.</span></b><div id="loadbar"><i></i></div></div>
+
+<header class="hud">
+  <div class="brand">Supawit<span>.</span></div>
+  <nav class="topnav">
+    <button class="back" id="back">← Back to room</button>
+    <button class="navbtn only-review" id="navKpi">KPI</button>
+    <button class="navbtn" id="navAbout">About</button>
+    <button class="navbtn" id="navContact">Contact</button>
+    <div class="langsw" id="langBtn" role="group" aria-label="Language">
+      <button data-l="en" lang="en">EN</button><button data-l="th" lang="th">TH</button><button data-l="ja" lang="ja">JA</button>
+    </div>
+  </nav>
+</header>
+
+<section class="rail" id="list" aria-label="Projects"></section>
+<p class="hint" id="hint"></p>
+<div class="tip" id="tip" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dhead">
+    <div class="dnav"><button id="prev" aria-label="Previous project">‹</button><span id="pos">01 / 07</span><button id="next" aria-label="Next project">›</button></div>
+    <button class="close" id="close" aria-label="Close">✕</button>
+  </div>
+  <div class="dbody" id="dbody"></div>
+</aside>
+<div class="lightbox" id="lb"><img alt=""></div>
+
+<script src="content_th.js"></script>
+<script src="content_en.js"></script>
+<script src="content_ja.js"></script>
+<script type="module" src="main.js"></script>
+</body>
+</html>

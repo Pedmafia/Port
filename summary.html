@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supawit Prommas — KPI Summary</title>
+<!-- Printable KPI summary (review mode). tools/make_summary_pdf.js prints it to assets/KPI_Summary_<lang>.pdf;
+     open summary.html?lang=th|en|ja in a browser to preview the pages. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style3d.css">
+<style>
+  @page{size:A4;margin:14mm 14mm 16mm;
+    @bottom-left{content:"Supawit Prommas · KPI Summary for R&D";font:500 8pt "JetBrains Mono",monospace;color:#8a817a}
+    @bottom-right{content:counter(page) " / " counter(pages);font:500 8pt "JetBrains Mono",monospace;color:#8a817a}}
+  html,body{background:#fff;overflow:visible;height:auto}
+  body{color:var(--ink)}
+  #doc{max-width:182mm;margin:0 auto}
+  .dbody{padding:0}
+  .pr-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--red);padding-bottom:8px;margin-bottom:18px}
+  .pr-head h1{font:800 24px var(--display)}
+  .pr-head p{font:600 11px var(--mono);letter-spacing:1px;color:var(--ink2);text-transform:uppercase}
+  .pr-card{break-before:page}
+  .dbody h2{font-size:28px}
+  .teaser{font-size:14.5px}
+  .sec{margin-top:14px}
+  .sec p,.sec li{font-size:13px;line-height:1.5}
+  .sec li{margin:2px 0}
+  .sec h4{font-size:11.5px;margin-bottom:6px;break-after:avoid}
+  .hero{margin-bottom:14px}
+  .hero img{height:230px;cursor:default}
+  .hero.duo img{height:200px}
+  .gallery,.rfilter,.btns,.rlink,.only-portfolio,.pi{display:none!important}
+  .sec.only-review,div.only-review{display:block}
+  /* keep blocks whole across page breaks */
+  .kpi-g,.kpi-item,.fc,.case,.k,.skill,.steps,.goal,figure,.rlist a,.sec li,.blk,.arch,.contact{break-inside:avoid}
+  .kpi-item{cursor:default;padding:7px 10px;margin-top:6px}
+  .pr-kpi .kpi{gap:8px;margin-top:8px}
+  .pr-kpi .kpi-g{padding:10px 12px}
+  .pr-kpi .kpi-g > p{margin-bottom:2px}
+  /* report library as a compact table */
+  .rlist{border-radius:8px}
+  .rlist a{grid-template-columns:78px 1fr auto;padding:5px 10px;gap:10px}
+  .rlist .rd{font-size:11px}
+  .rlist .rt{font-size:12.5px;line-height:1.35}
+  .rlist .rp{font-size:9.5px}
+  .rlist .rc{font-size:9.5px}
+  .fc .n{font-size:12px}
+  /* an A4 page is narrower than 760px, so the site's phone layout would kick in: restore the desktop layout */
+  #doc .rlist a{grid-template-columns:78px 1fr auto;gap:10px}
+  #doc .rlist .rd{grid-column:1;grid-row:1}
+  #doc .rlist .rt{grid-column:2;grid-row:1}
+  #doc .rlist .rc{display:inline-block;grid-column:3;grid-row:1}
+  #doc .fcwrap{grid-template-columns:1fr 1fr;break-inside:avoid}
+  #doc .fc .n{padding-top:6px;padding-bottom:6px}
+  #doc .hero.duo{grid-template-columns:1fr 1fr}
+  #doc .hero img{height:200px}
+  #doc .hero.duo img{height:190px}
+  #doc .arch{padding:12px;zoom:.88}
+  /* galleries are left out of the PDF: drop their section heading too */
+  .sec:has(.gallery){display:none}
+  .sec:has(.fcwrap){break-inside:avoid}
+  .sec:has(.rlist) .muted{display:none}
+  @media screen{
+    body{background:#d9d4cd;padding:24px 12px}
+    #doc{background:#fff;padding:14mm;box-shadow:0 4px 24px rgba(0,0,0,.15)}
+    .pr-card{margin-top:24mm;border-top:1px dashed #ccc;padding-top:10mm}
+  }
+</style>
+</head>
+<body class="mode-review">
+<main id="doc"></main>
+<script src="content_th.js"></script>
+<script src="content_en.js"></script>
+<script src="content_ja.js"></script>
+<script type="module">
+  import { CONTENT, summaryHTML } from "./summary.js";
+  const UI = { en: { nextYear: "Next year", inProgress: "● In progress" },
+               th: { nextYear: "ปีหน้า", inProgress: "● In progress" },
+               ja: { nextYear: "来年", inProgress: "● 進行中" } };
+  const lang = ["en", "th", "ja"].includes(new URLSearchParams(location.search).get("lang")) ? new URLSearchParams(location.search).get("lang") : "en";
+  document.documentElement.lang = lang;
+  const c = CONTENT[lang]();
+  const doc = document.querySelector("#doc");
+  doc.innerHTML = `<header class="pr-head"><div><h1>Supawit Prommas</h1><p>System Engineer · R&amp;D</p></div><p>${c.KPI.kicker}</p></header>` + summaryHTML(c, UI[lang]);
+  // links to files on this server mean nothing inside a PDF that is sent on: print them as plain text
+  doc.querySelectorAll("a[href]").forEach(a => { if (!/^(mailto:|tel:|https?:)/.test(a.getAttribute("href"))) { a.removeAttribute("href"); a.removeAttribute("target"); } });
+  doc.querySelectorAll("button").forEach(b => b.setAttribute("tabindex", "-1"));
+  // nothing is clickable on paper
+  const PRINT_INTRO = { en: "My work grouped by the evaluation criteria — each item is described on the following pages, in this order.",
+                        th: "สรุปผลงานตามหัวข้อการประเมิน — รายละเอียดของแต่ละรายการอยู่ในหน้าถัดไปตามลำดับนี้",
+                        ja: "評価項目ごとに成果をまとめました。各項目の詳細は、この順番で次のページ以降に掲載しています。" };
+  doc.querySelector(".pr-kpi .teaser").textContent = PRINT_INTRO[lang];
+  document.title = `Supawit Prommas — ${c.KPI.title}`;
+</script>
+</body>
+</html>
